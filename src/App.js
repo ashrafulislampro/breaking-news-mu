@@ -1,24 +1,33 @@
-import logo from './logo.svg';
+
+import axios from 'axios';
+import { useState,useEffect } from 'react';
 import './App.css';
+import News from './News/News';
 
 function App() {
+    
+    const [articles, setArticles] = useState([]);
+    // useEffect(() =>{
+    //     const url = 'http://newsapi.org/v2/everything?q=bitcoin&from=2020-12-02&sortBy=publishedAt&apiKey=cc4043e5c25a4cbc8dfbe41550decebc';
+    //     fetch(url)
+    //     .then(res => res.json())
+    //     .then(data => setArticles(data.articles))
+    // },[]);
+    useEffect(() => {
+      const url = 'http://newsapi.org/v2/everything?q=bitcoin&from=2020-12-02&sortBy=publishedAt&apiKey=cc4043e5c25a4cbc8dfbe41550decebc';
+      axios(url)
+      .then(data => setArticles(data.data.articles))
+
+
+    },[])
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <div>
+       <h1>Top Headline : {articles.length} </h1>
+      
+      {
+        articles.map(article => <News article={article}></News>)
+      }
+   </div>
   );
 }
 
